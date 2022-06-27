@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from pydantic import Field
 
 #FAstAPI
-from fastapi import Path, Query, Body, FastAPI
+from fastapi import Path, Query, Body, status, FastAPI
 
 app = FastAPI()
 
@@ -64,19 +64,30 @@ class Person(PersonBase):
     #     }
 
 
-@app.get("/")
+@app.get(
+    path="/", 
+    status_code=status.HTTP_200_OK
+    )
 def Home():
     return {"message": "Hello World"}
 
 #request and response Body
 
-@app.post("/person/new", response_model=Person, response_model_exclude={"password"})
+@app.post(
+    path="/person/new", 
+    response_model=Person, 
+    response_model_exclude={"password"},
+    status_code=status.HTTP_201_CREATED
+    )
 def createPerson(person: Person = Body(...)):
     return person
 
 #validations Query Params
 
-@app.get("/person/details")
+@app.get(
+    path="/person/details",
+    status_code=status.HTTP_200_OK
+    )
 def showPerson(
     name: Optional[str] = Query(
         None,
@@ -97,7 +108,10 @@ def showPerson(
 
 #validations path Params
 
-@app.get("/person/details/{person_id}")
+@app.get(
+    path="/person/details/{person_id}",
+    status_code=status.HTTP_200_OK
+    )
 def showPerson(
     person_id: int = Path(
         ...,
@@ -108,7 +122,10 @@ def showPerson(
     return {"person_id": person_id}
 
 #validations body Params
-@app.put("/person/{person_id}")
+@app.put(
+    path="/person/{person_id}",
+    status_code=status.HTTP_202_ACCEPTED
+    )
 def updatePerson(
     person_id: int = Path(
         ..., 
