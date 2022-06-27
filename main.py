@@ -1,13 +1,14 @@
 #python
+from email import message
 from typing import Optional
 from enum import Enum
 
 #pydantic
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 from pydantic import Field
 
 #FAstAPI
-from fastapi import Path, Query, Body, status, FastAPI
+from fastapi import Path, Query, Body, Form, status, FastAPI
 
 app = FastAPI()
 
@@ -62,6 +63,10 @@ class Person(PersonBase):
     #             "is_married": True
     #         }
     #     }
+
+class Login(BaseModel):
+    username: str = Field(..., min_length=3, max_length=30)
+    message: str = Field(default="Login successful")
 
 
 @app.get(
@@ -141,3 +146,11 @@ def updatePerson(
     #result.update(location.dict())
     #return result
     return person
+
+@app.post(
+    path="/login",
+    response_model=Login,
+    status_code=status.HTTP_200_OK
+    )
+def login(username:str = Form(...), password:SecretStr = Form(...)):
+    return Login(username=username)
