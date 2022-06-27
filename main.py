@@ -46,6 +46,17 @@ class Person(BaseModel):
         )
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None)
+    class Config:
+        schema_extra = {
+            "example": {
+                "first_name": "John",
+                "last_name": "Doe",
+                "age": 25,
+                "hair_color": "brown",
+                "is_married": True
+            }
+        }
+
 
 @app.get("/")
 def Home():
@@ -94,8 +105,9 @@ def updatePerson(
         description="The id of the person to update, Its a number and required",
         ),
     person: Person = Body(...),
-    location: Location = Body(...)
+    #location: Location = Body(...)
 ):
-    result = person.dict()
-    result.update(location.dict())
-    return result
+    #result = person.dict()
+    #result.update(location.dict())
+    #return result
+    return person
