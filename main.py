@@ -28,7 +28,8 @@ class Location(BaseModel):
   );
     state: str = Field(...)
     country: Optional[str] = Field(default = None);
-class Person(BaseModel):
+
+class PersonBase(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
@@ -49,6 +50,7 @@ class Person(BaseModel):
         )
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None)
+class Person(PersonBase):
     password: str = Field(..., min_length=8)
     # class Config:
     #     schema_extra = {
