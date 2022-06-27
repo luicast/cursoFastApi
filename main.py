@@ -4,11 +4,12 @@ from typing import Optional
 from enum import Enum
 
 #pydantic
-from pydantic import BaseModel, SecretStr
+from pydantic import BaseModel, SecretStr, EmailStr
 from pydantic import Field
 
 #FAstAPI
-from fastapi import Path, Query, Body, Form, status, FastAPI
+from fastapi import status, FastAPI
+from fastapi import Path, Query, Body, Form, Header, Cookie
 
 app = FastAPI()
 
@@ -154,3 +155,29 @@ def updatePerson(
     )
 def login(username:str = Form(...), password:SecretStr = Form(...)):
     return Login(username=username)
+
+#cookies and headers params
+
+@app.post(
+    path="/contact",
+    status_code=status.HTTP_200_OK,
+)
+def contact(
+    first_name: str = Form(...,
+    max_length=20,
+    min_length=3
+    ),
+    last_name: str = Form(...,
+    max_length=20,
+    min_length=3
+    ),
+    email: EmailStr = Form(...),
+    message: str = Form(...,
+    max_length=200,
+    min_length=20,
+    ),
+    user_agent: Optional[str] = Header(default=None),
+    ads: Optional[str] = Cookie(default=None)
+
+):
+    return user_agent
