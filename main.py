@@ -22,9 +22,12 @@ class HairColor(Enum):
     WHITE = "white"
     OTHER = "other"
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(
+    ...,
+    min_length = 0
+  );
+    state: str = Field(...)
+    country: Optional[str] = Field(default = None);
 class Person(BaseModel):
     first_name: str = Field(
         ...,
