@@ -78,11 +78,13 @@ def showPerson(
         max_length=50,
         title="Person's name",
         description="The name of the person to show, Its between 3 and 50 characters",
+        example="Joy"
     ), 
     age: str = Query(
         ...,
         title="Person's age",
         description = "person's age, Its a number and required",
+        example = "25"
     ),
 ):
     return {"name": name, "age": age}
@@ -91,7 +93,11 @@ def showPerson(
 
 @app.get("/person/details/{person_id}")
 def showPerson(
-    person_id: int = Path(..., gt=0)
+    person_id: int = Path(
+        ...,
+        gt=0,
+        example=123
+        )
 ):
     return {"person_id": person_id}
 
@@ -103,6 +109,7 @@ def updatePerson(
         gt=0,
         title="Person's id",
         description="The id of the person to update, Its a number and required",
+        example=123
         ),
     person: Person = Body(...),
     #location: Location = Body(...)
