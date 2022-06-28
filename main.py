@@ -113,7 +113,8 @@ def createPerson(person: Person = Body(...)):
 @app.get(
     path="/person/details",
     status_code=status.HTTP_200_OK,
-    tags=["Persons"]
+    tags=["Persons"],
+    deprecated=True
     )
 def showPerson(
     name: Optional[str] = Query(
