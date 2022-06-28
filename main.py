@@ -1,5 +1,4 @@
 #python
-from email import message
 from typing import Optional
 from enum import Enum
 
@@ -8,7 +7,7 @@ from pydantic import BaseModel, SecretStr, EmailStr
 from pydantic import Field
 
 #FAstAPI
-from fastapi import UploadFile, status, FastAPI
+from fastapi import UploadFile, status, HTTPException, FastAPI
 from fastapi import Path, Query, Body, Form, Header, Cookie, File
 
 app = FastAPI()
@@ -114,6 +113,8 @@ def showPerson(
 
 #validations path Params
 
+persons = [1,2,3,4,5]
+
 @app.get(
     path="/person/details/{person_id}",
     status_code=status.HTTP_200_OK
@@ -125,6 +126,11 @@ def showPerson(
         example=123
         )
 ):
+    if person_id not in persons:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Person not found"
+        )
     return {"person_id": person_id}
 
 #validations body Params
