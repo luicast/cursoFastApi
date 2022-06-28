@@ -52,7 +52,7 @@ class PersonBase(BaseModel):
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None)
 class Person(PersonBase):
-    password: str = Field(..., min_length=8)
+    password: SecretStr = Field(..., min_length=8)
     # class Config:
     #     schema_extra = {
     #         "example": {
@@ -84,9 +84,28 @@ def Home():
     response_model=Person, 
     response_model_exclude={"password"},
     status_code=status.HTTP_201_CREATED,
-    tags=["Persons"]
+    tags=["Persons"],
+    summary="Create a new person in the database"
     )
 def createPerson(person: Person = Body(...)):
+    """
+    Title: Create a new person
+
+    Description: This path operation Create a new person
+
+    parameters:
+    - request body parameter
+        - description: **person: Person** -> A person model 
+        required: true
+        schema:
+            $ref: '#/components/schemas/Person'
+    responses:
+    200:
+        - description: The person created
+        schema:
+            $ref: '#/components/schemas/Person'
+
+    """
     return person
 
 #validations Query Params
