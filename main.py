@@ -71,7 +71,8 @@ class Login(BaseModel):
 
 @app.get(
     path="/", 
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Home"]
     )
 def Home():
     return {"message": "Hello World"}
@@ -82,7 +83,8 @@ def Home():
     path="/person/new", 
     response_model=Person, 
     response_model_exclude={"password"},
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
+    tags=["Persons"]
     )
 def createPerson(person: Person = Body(...)):
     return person
@@ -91,7 +93,8 @@ def createPerson(person: Person = Body(...)):
 
 @app.get(
     path="/person/details",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
     )
 def showPerson(
     name: Optional[str] = Query(
@@ -117,7 +120,8 @@ persons = [1,2,3,4,5]
 
 @app.get(
     path="/person/details/{person_id}",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
     )
 def showPerson(
     person_id: int = Path(
@@ -136,7 +140,8 @@ def showPerson(
 #validations body Params
 @app.put(
     path="/person/{person_id}",
-    status_code=status.HTTP_202_ACCEPTED
+    status_code=status.HTTP_202_ACCEPTED,
+    tags=["Persons"]
     )
 def updatePerson(
     person_id: int = Path(
@@ -157,7 +162,8 @@ def updatePerson(
 @app.post(
     path="/login",
     response_model=Login,
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
     )
 def login(username:str = Form(...), password:SecretStr = Form(...)):
     return Login(username=username)
@@ -167,7 +173,8 @@ def login(username:str = Form(...), password:SecretStr = Form(...)):
 @app.post(
     path="/contact",
     status_code=status.HTTP_200_OK,
-)
+    tags=["contact"]
+    )
 def contact(
     first_name: str = Form(...,
     max_length=20,
@@ -192,7 +199,8 @@ def contact(
 @app.post(
     path="/post-image",
     status_code=status.HTTP_200_OK,
-)
+    tags=["Files"]
+    )
 def post_image(
     image: UploadFile = File(...)
 ):
